@@ -1,0 +1,83 @@
+# .NET / MSBuild
+**/bin/
+**/obj/
+*.pdb
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# IDEs and editors
+.vs/
+.idea/
+.vscode/
+_ReSharper*/
+*.DotSettings.user
+
+# Tests and coverage
+TestResults/
+coverage/
+coverage.*
+*.coverage
+*.coveragexml
+*.trx
+
+# Generated builds and release artifacts
+artifacts/
+output/
+publish/
+release/
+dist/
+tmp/
+work/
+TraceDeckFE-v*-portable.zip
+TraceDeckFE-v*-win-x64-portable.zip
+**/TraceDeckFE.exe
+
+# Portable runtime user data
+**/data/
+**/logs/
+**/recovery/
+settings.json
+session.json
+autosave/
+*.autosave
+*.recovery
+
+# User projects and private references
+*.TDFE
+*.tdfe
+!tests/Fixtures/*.TDFE
+!tests/Fixtures/*.tdfe
+references/
+reference-images/
+screenshots/private/
+*.private.png
+*.private.jpg
+
+# Temporary files and crash dumps
+*.tmp
+*.temp
+*.bak
+*.dmp
+*.dump
+*.stackdump
+
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+*.local.json
+
+# Generated/internal release records retained locally but not published
+/distribution/
+/CORE_ARCHITECTURE_FIX_REPORT.md
+/MILESTONE_01_REPORT.md
+/MILESTONE_02_REPORT.md
+/MILESTONE_03_REPORT.md
+/MILESTONE_04_REPORT.md
+/FINAL_RC_REPORT.md
+/V1_RELEASE_REPORT.md
+/V1_0_0_PORTABLE_CLEANUP_REPORT.md
+/docs/USER_GUIDE_REPORT.md
+

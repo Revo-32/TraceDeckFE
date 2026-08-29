@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#27384f" />
+      <stop offset="1" stop-color="#101419" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" rx="32" fill="url(#background)" />
+  <path d="M95 330 L210 150 L365 300 L505 110 L705 330 Z" fill="#d7dbe0" opacity="0.9" />
+  <circle cx="205" cy="135" r="45" fill="#f1b85b" />
+  <rect x="80" y="355" width="640" height="10" rx="5" fill="#8fa7c2" />
+  <text x="400" y="410" text-anchor="middle" fill="#f2f2f2" font-family="Segoe UI" font-size="26">TRACEDECK FE · MILESTONE 2</text>
+</svg>

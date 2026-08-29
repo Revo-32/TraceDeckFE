@@ -1,0 +1,300 @@
+<Window x:Class="TraceDeckFE.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:TraceDeckFE.Localization"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        Title="TraceDeck FE" Width="{Binding UiState.ControllerWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        Height="900" MinWidth="280" MaxWidth="520" MinHeight="600"
+        WindowStyle="None" ResizeMode="CanResizeWithGrip"
+        Icon="/TraceDeckFE;component/Assets/TraceDeckFE.ico"
+        FontFamily="{StaticResource PretendardFontFamily}"
+        Background="{StaticResource WindowBackgroundBrush}"
+        Foreground="{StaticResource PrimaryTextBrush}"
+        AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop" PreviewKeyDown="OnPreviewKeyDown">
+    <shell:WindowChrome.WindowChrome>
+        <shell:WindowChrome CaptionHeight="48" ResizeBorderThickness="6" CornerRadius="8"
+                            GlassFrameThickness="0" UseAeroCaptionButtons="False" />
+    </shell:WindowChrome.WindowChrome>
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <Style x:Key="NeutralTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}" />
+            <Setter Property="FontFamily" Value="{StaticResource PretendardFontFamily}" />
+            <Setter Property="FontWeight" Value="Medium" />
+            <Setter Property="Background" Value="#191919" />
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="6,4" />
+            <Setter Property="CaretBrush" Value="{StaticResource PrimaryTextBrush}" />
+        </Style>
+        <Style x:Key="PaletteListStyle" TargetType="ListBox">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Foreground" Value="{StaticResource PrimaryTextBrush}" />
+        </Style>
+        <Style TargetType="ListBoxItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0,0,0,6" />
+        </Style>
+    </Window.Resources>
+
+    <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Background="{StaticResource WindowBackgroundBrush}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="48" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="12,0,6,0">
+                <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /><ColumnDefinition Width="Auto" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                <Grid VerticalAlignment="Center" Margin="0,0,5,0">
+                    <Grid.ColumnDefinitions><ColumnDefinition Width="36" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                    <Image Source="{StaticResource BrandLogo}" Width="36" Height="30" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" AutomationProperties.Name="TraceDeck FE logo" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="7,0,0,0">
+                        <TextBlock Text="TraceDeck FE" FontSize="12" FontWeight="SemiBold" />
+                        <TextBlock Text="{loc:Text Brand.Tagline}" FontSize="7.5" Foreground="{StaticResource SecondaryTextBrush}" />
+                    </StackPanel>
+                </Grid>
+                <Button x:Name="SettingsButton" ToolTip="{loc:Text Tip.Settings}" AutomationProperties.Name="{loc:Text Ui.Settings}"
+                        Grid.Column="1" Width="28" MinWidth="28" Height="30" Padding="5" Style="{StaticResource IconButtonStyle}"
+                        shell:WindowChrome.IsHitTestVisibleInChrome="True" Click="OnSettingsClick">
+                    <Viewbox Width="16" Height="16"><Path Data="{StaticResource SettingsGearGeometry}" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.5" StrokeLineJoin="Round" Margin="1" /></Viewbox>
+                </Button>
+                <Button Grid.Column="2" Content="—" ToolTip="{loc:Text Ui.Minimize}" AutomationProperties.Name="{loc:Text Ui.Minimize}" Width="28" MinWidth="28" Height="30" Padding="4" Margin="2,0" Style="{StaticResource IconButtonStyle}"
+                        shell:WindowChrome.IsHitTestVisibleInChrome="True" Click="OnMinimizeClick" />
+                <Button Grid.Column="3" Content="×" ToolTip="{loc:Text Ui.Close}" AutomationProperties.Name="{loc:Text Ui.Close}" Width="28" MinWidth="28" Height="30" Padding="4" Margin="2,0" Style="{StaticResource IconButtonStyle}"
+                        shell:WindowChrome.IsHitTestVisibleInChrome="True" Click="OnCloseClick" />
+            </Grid>
+
+            <Border Grid.Row="1" Margin="12,4,12,10" Padding="14,12" Background="{StaticResource PanelBrush}"
+                    BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="10">
+                <Grid>
+                    <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+                    <TextBlock Text="{Binding ConnectionStateText}" FontSize="12" FontWeight="SemiBold" />
+                    <TextBlock Grid.Row="1" Text="{Binding ConnectionDetail}" Margin="0,4,0,9" TextTrimming="CharacterEllipsis"
+                               Foreground="{StaticResource SecondaryTextBrush}" FontSize="10" />
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                        <Button ToolTip="{loc:Text Tip.SelectWindow}" Content="{loc:Text Ui.SelectWindow}" Margin="0,0,4,0" Style="{StaticResource NeutralButtonStyle}" Click="OnSelectWindowClick" />
+                        <Button ToolTip="{loc:Text Tip.Reconnect}" Grid.Column="1" Content="{loc:Text Ui.Reconnect}" Margin="4,0,0,0" Style="{StaticResource NeutralButtonStyle}" Click="OnReconnectClick" />
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <ScrollViewer Grid.Row="2" Margin="12,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel>
+                    <Expander IsExpanded="{Binding UiState.ProjectExpanded, Mode=TwoWay}" Style="{StaticResource CardExpanderStyle}">
+                        <Expander.Header>
+                            <DockPanel MinWidth="0" LastChildFill="False">
+                                <TextBlock Text="{loc:Text Card.Project}" FontSize="11" FontWeight="SemiBold" />
+                                <TextBlock Text="{Binding ProjectDisplayName}" DockPanel.Dock="Right" MaxWidth="150" TextTrimming="CharacterEllipsis"
+                                           TextAlignment="Right" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" />
+                            </DockPanel>
+                        </Expander.Header>
+                        <StackPanel>
+                            <TextBlock Text="{Binding Reference.ImageDescription}" TextTrimming="CharacterEllipsis"
+                                       Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" Margin="0,0,0,8" />
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                                <Button ToolTip="{loc:Text Tip.New}" Content="{loc:Text Ui.New}" Margin="0,0,4,0" Style="{StaticResource NeutralButtonStyle}" Click="OnNewProjectClick" />
+                                <Button ToolTip="{loc:Text Tip.OpenProject}" Grid.Column="1" Content="{loc:Text Ui.OpenProject}" Margin="4,0,0,0" Style="{StaticResource NeutralButtonStyle}" Click="OnOpenProjectClick" />
+                            </Grid>
+                            <Grid Margin="0,0,0,8">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                                <Button ToolTip="{loc:Text Tip.Save}" Content="{loc:Text Ui.Save}" Margin="0,0,4,0" Style="{StaticResource NeutralButtonStyle}" Click="OnSaveProjectClick" />
+                                <Button ToolTip="{loc:Text Tip.SaveAs}" Grid.Column="1" Content="{loc:Text Ui.SaveAs}" Margin="4,0,0,0" Style="{StaticResource NeutralButtonStyle}" Click="OnSaveAsProjectClick" />
+                            </Grid>
+                            <Grid Margin="0,0,0,8"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                                <Button ToolTip="{loc:Text Tip.Undo}" Content="{loc:Text Ui.Undo}" IsEnabled="{Binding CanUndo}" Margin="0,0,4,0" Style="{StaticResource NeutralButtonStyle}" Click="OnUndoClick" />
+                                <Button ToolTip="{loc:Text Tip.Redo}" Grid.Column="1" Content="{loc:Text Ui.Redo}" IsEnabled="{Binding CanRedo}" Margin="4,0,0,0" Style="{StaticResource NeutralButtonStyle}" Click="OnRedoClick" />
+                            </Grid>
+                            <Button ToolTip="{loc:Text Tip.OpenReference}" Content="{loc:Text Ui.OpenReference}" Style="{StaticResource NeutralButtonStyle}" Click="OnOpenImageClick" />
+                            <TextBlock Text="{loc:Text Ui.DropHelp}"
+                                       TextWrapping="Wrap" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" Margin="0,8,0,0" />
+                        </StackPanel>
+                    </Expander>
+
+                    <Expander IsExpanded="{Binding UiState.OverlayExpanded, Mode=TwoWay}" Style="{StaticResource CardExpanderStyle}">
+                        <Expander.Header>
+                            <DockPanel MinWidth="0" LastChildFill="False"><TextBlock Text="{loc:Text Card.Overlay}" FontSize="11" FontWeight="SemiBold" />
+                                <TextBlock Text="{Binding OverlaySummary}" DockPanel.Dock="Right" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" /></DockPanel>
+                        </Expander.Header>
+                        <StackPanel IsEnabled="{Binding Reference.HasImage}">
+                            <Grid Margin="0,0,0,10"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                <TextBlock ToolTip="{loc:Text Tip.Visible}" Text="{loc:Text Ui.Visible}" VerticalAlignment="Center" FontSize="11" />
+                                <ToggleButton ToolTip="{loc:Text Tip.Visible}" Grid.Column="1" IsChecked="{Binding Reference.IsVisible, Mode=TwoWay}" Style="{StaticResource SwitchStyle}" /></Grid>
+                            <Grid Margin="0,0,0,10"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                <TextBlock ToolTip="{loc:Text Tip.Lock}" Text="{loc:Text Ui.Lock}" VerticalAlignment="Center" FontSize="11" />
+                                <ToggleButton ToolTip="{loc:Text Tip.Lock}" Grid.Column="1" IsChecked="{Binding Reference.IsLocked, Mode=TwoWay}" Style="{StaticResource SwitchStyle}" /></Grid>
+                            <Grid Margin="0,0,0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                <TextBlock ToolTip="{loc:Text Tip.Opacity}" Text="{loc:Text Ui.Opacity}" FontSize="10" Foreground="{StaticResource SecondaryTextBrush}" />
+                                <TextBlock Grid.Column="1" Text="{Binding Reference.Opacity, StringFormat={}{0:P0}}" FontSize="10" /></Grid>
+                            <Slider ToolTip="{loc:Text Tip.Opacity}" Minimum="0" Maximum="1" Value="{Binding Reference.Opacity, Mode=TwoWay}" Style="{StaticResource NeutralSliderStyle}" />
+                        </StackPanel>
+                    </Expander>
+
+                    <Expander IsExpanded="{Binding UiState.TransformExpanded, Mode=TwoWay}" Style="{StaticResource CardExpanderStyle}">
+                        <Expander.Header><DockPanel MinWidth="0" LastChildFill="False"><TextBlock Text="{loc:Text Card.Transform}" FontSize="11" FontWeight="SemiBold" />
+                            <TextBlock Text="{Binding TransformSummary}" DockPanel.Dock="Right" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" /></DockPanel></Expander.Header>
+                        <StackPanel IsEnabled="{Binding Reference.HasImage}">
+                            <Grid Margin="0,0,0,9"><Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                <Button ToolTip="{loc:Text Tip.Zoom}" Content="−" Width="38" Style="{StaticResource IconButtonStyle}" Click="OnScaleDownClick" />
+                                <TextBlock Grid.Column="1" Text="{Binding Reference.Scale, StringFormat={}{0:P1}}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="13" />
+                                <Button ToolTip="{loc:Text Tip.Zoom}" Grid.Column="2" Content="+" Width="38" Style="{StaticResource IconButtonStyle}" Click="OnScaleUpClick" /></Grid>
+                            <Grid Margin="0,0,0,9"><Grid.ColumnDefinitions><ColumnDefinition Width="Auto" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                <Button ToolTip="{loc:Text Tip.Rotation}" Content="↶" Width="38" Style="{StaticResource IconButtonStyle}" Click="OnRotateLeftClick" />
+                                <TextBlock Grid.Column="1" Text="{Binding Reference.Rotation, StringFormat={}{0:0}°}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" />
+                                <Button ToolTip="{loc:Text Tip.Rotation}" Grid.Column="2" Content="↷" Width="38" Style="{StaticResource IconButtonStyle}" Click="OnRotateRightClick" /></Grid>
+                            <Grid Margin="0,0,0,9"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                                <ToggleButton ToolTip="{loc:Text Tip.FlipH}" Content="{loc:Text Ui.FlipH}" Margin="0,0,4,0" IsChecked="{Binding Reference.FlipHorizontal, Mode=TwoWay}" Style="{StaticResource NeutralToggleButtonStyle}" />
+                                <ToggleButton ToolTip="{loc:Text Tip.FlipV}" Grid.Column="1" Content="{loc:Text Ui.FlipV}" Margin="4,0,0,0" IsChecked="{Binding Reference.FlipVertical, Mode=TwoWay}" Style="{StaticResource NeutralToggleButtonStyle}" /></Grid>
+                            <Button ToolTip="{loc:Text Tip.ResetTransform}" Content="{loc:Text Ui.ResetTransform}" Style="{StaticResource NeutralButtonStyle}" Click="OnResetTransformClick" />
+                        </StackPanel>
+                    </Expander>
+
+                    <Expander IsExpanded="{Binding UiState.PositionExpanded, Mode=TwoWay}" Style="{StaticResource CardExpanderStyle}">
+                        <Expander.Header><DockPanel MinWidth="0" LastChildFill="False"><TextBlock Text="{loc:Text Card.Position}" FontSize="11" FontWeight="SemiBold" />
+                            <TextBlock Text="{Binding PositionSummary}" DockPanel.Dock="Right" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" /></DockPanel></Expander.Header>
+                        <Grid IsEnabled="{Binding Reference.HasImage}">
+                            <Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                            <Button ToolTip="{loc:Text Tip.Position}" Grid.Column="1" Content="↑" Margin="3" Style="{StaticResource IconButtonStyle}" Click="OnNudgeUpClick" />
+                            <Button ToolTip="{loc:Text Tip.Position}" Grid.Row="1" Content="←" Margin="3" Style="{StaticResource IconButtonStyle}" Click="OnNudgeLeftClick" />
+                            <Button ToolTip="{loc:Text Tip.Center}" Grid.Row="1" Grid.Column="1" Content="{loc:Text Ui.Center}" Margin="3" FontSize="9" Style="{StaticResource IconButtonStyle}" Click="OnCenterClick" />
+                            <Button ToolTip="{loc:Text Tip.Position}" Grid.Row="1" Grid.Column="2" Content="→" Margin="3" Style="{StaticResource IconButtonStyle}" Click="OnNudgeRightClick" />
+                            <Button ToolTip="{loc:Text Tip.Position}" Grid.Row="2" Grid.Column="1" Content="↓" Margin="3" Style="{StaticResource IconButtonStyle}" Click="OnNudgeDownClick" />
+                        </Grid>
+                    </Expander>
+
+                    <Expander IsExpanded="{Binding UiState.ImageAssistExpanded, Mode=TwoWay}" Style="{StaticResource CardExpanderStyle}">
+                        <Expander.Header><DockPanel MinWidth="0" LastChildFill="False"><TextBlock Text="{loc:Text Card.Assist}" FontSize="11" FontWeight="SemiBold" />
+                            <TextBlock Text="{Binding ImageAssistSummary}" DockPanel.Dock="Right" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" /></DockPanel></Expander.Header>
+                        <StackPanel IsEnabled="{Binding Reference.HasImage}">
+                            <Grid Margin="0,0,0,11"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                <TextBlock ToolTip="{loc:Text Tip.Grayscale}" Text="{loc:Text Ui.Grayscale}" VerticalAlignment="Center" FontSize="11" />
+                                <ToggleButton ToolTip="{loc:Text Tip.Grayscale}" Grid.Column="1" IsChecked="{Binding Reference.IsGrayscale, Mode=TwoWay}" Style="{StaticResource SwitchStyle}" /></Grid>
+                            <Grid Margin="0,0,0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                <TextBlock ToolTip="{loc:Text Tip.Contrast}" Text="{loc:Text Ui.Contrast}" FontSize="10" Foreground="{StaticResource SecondaryTextBrush}" />
+                                <TextBlock Grid.Column="1" Text="{Binding Reference.Contrast, StringFormat={}{0:+0;-0;0}}" FontSize="10" /></Grid>
+                            <Slider ToolTip="{loc:Text Tip.Contrast}" Minimum="-100" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding Reference.Contrast, Mode=TwoWay}" Style="{StaticResource NeutralSliderStyle}" />
+                            <Button ToolTip="{loc:Text Tip.ResetEffects}" Content="{loc:Text Ui.ResetEffects}" Margin="0,10,0,0" Style="{StaticResource NeutralButtonStyle}" Click="OnResetEffectsClick" />
+                        </StackPanel>
+                    </Expander>
+
+                    <Expander IsExpanded="{Binding UiState.GuidesExpanded, Mode=TwoWay}" Style="{StaticResource CardExpanderStyle}">
+                        <Expander.Header><DockPanel MinWidth="0" LastChildFill="False"><TextBlock Text="{loc:Text Card.Guides}" FontSize="11" FontWeight="SemiBold" />
+                            <TextBlock Text="{Binding GuideSummary}" DockPanel.Dock="Right" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" /></DockPanel></Expander.Header>
+                        <StackPanel>
+                            <Grid Margin="0,0,0,10"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                <TextBlock ToolTip="{loc:Text Tip.Grid}" Text="{loc:Text Ui.Grid}" VerticalAlignment="Center" FontSize="11" /><ToggleButton ToolTip="{loc:Text Tip.Grid}" Grid.Column="1" IsChecked="{Binding Guides.IsGridVisible, Mode=TwoWay}" Style="{StaticResource SwitchStyle}" /></Grid>
+                            <Grid Margin="0,0,0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                <TextBlock ToolTip="{loc:Text Tip.Spacing}" Text="{loc:Text Ui.Spacing}" FontSize="10" Foreground="{StaticResource SecondaryTextBrush}" /><TextBlock Grid.Column="1" Text="{Binding Guides.GridSpacing, StringFormat={}{0:0} px}" FontSize="10" /></Grid>
+                            <Slider ToolTip="{loc:Text Tip.Spacing}" Minimum="16" Maximum="400" TickFrequency="4" IsSnapToTickEnabled="True" Value="{Binding Guides.GridSpacing, Mode=TwoWay}" Style="{StaticResource NeutralSliderStyle}" />
+                            <Grid Margin="0,11,0,8"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                <TextBlock ToolTip="{loc:Text Tip.CenterGuide}" Text="{loc:Text Ui.HorizontalCenter}" FontSize="11" /><ToggleButton ToolTip="{loc:Text Tip.CenterGuide}" Grid.Column="1" IsChecked="{Binding Guides.IsHorizontalCenterVisible, Mode=TwoWay}" Style="{StaticResource SwitchStyle}" /></Grid>
+                            <Grid Margin="0,0,0,10"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                <TextBlock ToolTip="{loc:Text Tip.CenterGuide}" Text="{loc:Text Ui.VerticalCenter}" FontSize="11" /><ToggleButton ToolTip="{loc:Text Tip.CenterGuide}" Grid.Column="1" IsChecked="{Binding Guides.IsVerticalCenterVisible, Mode=TwoWay}" Style="{StaticResource SwitchStyle}" /></Grid>
+                            <Grid Margin="0,0,0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                <TextBlock ToolTip="{loc:Text Tip.GuideOpacity}" Text="{loc:Text Ui.GuideOpacity}" FontSize="10" Foreground="{StaticResource SecondaryTextBrush}" /><TextBlock Grid.Column="1" Text="{Binding Guides.Opacity, StringFormat={}{0:P0}}" FontSize="10" /></Grid>
+                            <Slider ToolTip="{loc:Text Tip.GuideOpacity}" Minimum="0.05" Maximum="1" Value="{Binding Guides.Opacity, Mode=TwoWay}" Style="{StaticResource NeutralSliderStyle}" />
+                        </StackPanel>
+                    </Expander>
+
+                    <Expander IsExpanded="{Binding UiState.ColorExpanded, Mode=TwoWay}" Style="{StaticResource CardExpanderStyle}">
+                        <Expander.Header><DockPanel MinWidth="0" LastChildFill="False"><TextBlock Text="{loc:Text Card.Color}" FontSize="11" FontWeight="SemiBold" />
+                            <TextBlock Text="{Binding Colors.Hex}" DockPanel.Dock="Right" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" /></DockPanel></Expander.Header>
+                        <StackPanel>
+                            <Grid Margin="0,0,0,10"><Grid.ColumnDefinitions><ColumnDefinition Width="52" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                                <Border Width="44" Height="44" Background="{Binding Colors.SwatchBrush}" BorderBrush="#777777" BorderThickness="1" CornerRadius="4" />
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Colors.Hex}" FontSize="17" FontWeight="SemiBold" />
+                                    <TextBlock Text="{Binding Colors.Rgb, StringFormat=RGB  {0}}" FontSize="10" Foreground="{StaticResource SecondaryTextBrush}" />
+                                    <TextBlock Text="{Binding Colors.AlphaVisibilityText}" FontSize="9" Foreground="{StaticResource SecondaryTextBrush}" />
+                                    <TextBlock Text="{loc:Text Ui.Transparent}" Visibility="{Binding Colors.IsTransparent, Converter={StaticResource BooleanToVisibilityConverter}}" FontSize="9" />
+                                </StackPanel>
+                            </Grid>
+                            <TextBlock Text="FORZA HSB" FontSize="9" Foreground="{StaticResource SecondaryTextBrush}" Margin="0,0,0,5" />
+                            <UniformGrid Columns="{Binding HsbColumns}">
+                            <Grid IsEnabled="{Binding Colors.HasColor}" Margin="0,0,4,5">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="22" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                <TextBlock Text="H" /><TextBlock Grid.Column="1" Text="{Binding Colors.HueText}" /><Button ToolTip="{loc:Text Tip.CopyH}" Grid.Column="2" Content="{loc:Text Ui.Copy}" Tag="H" Style="{StaticResource IconButtonStyle}" Click="OnCopyColorComponentClick" /></Grid>
+                            <Grid IsEnabled="{Binding Colors.HasColor}" Margin="0,0,0,5">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="22" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                <TextBlock Text="S" /><TextBlock Grid.Column="1" Text="{Binding Colors.SaturationText}" /><Button ToolTip="{loc:Text Tip.CopyS}" Grid.Column="2" Content="{loc:Text Ui.Copy}" Tag="S" Style="{StaticResource IconButtonStyle}" Click="OnCopyColorComponentClick" /></Grid>
+                            <Grid IsEnabled="{Binding Colors.HasColor}" Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions><ColumnDefinition Width="22" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                <TextBlock Text="B" /><TextBlock Grid.Column="1" Text="{Binding Colors.BrightnessText}" /><Button ToolTip="{loc:Text Tip.CopyB}" Grid.Column="2" Content="{loc:Text Ui.Copy}" Tag="B" Style="{StaticResource IconButtonStyle}" Click="OnCopyColorComponentClick" /></Grid>
+                            </UniformGrid>
+                            <Button ToolTip="{loc:Text Tip.PickColor}" Content="{Binding Colors.PickButtonText}" Style="{StaticResource NeutralButtonStyle}" Click="OnPickColorClick" />
+                            <Grid Margin="0,10,0,10"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                <TextBlock ToolTip="{loc:Text Tip.Magnifier}" Text="{loc:Text Ui.Magnifier}" VerticalAlignment="Center" FontSize="11" /><ToggleButton ToolTip="{loc:Text Tip.Magnifier}" Grid.Column="1" IsChecked="{Binding Colors.MagnifierEnabled, Mode=TwoWay}" Style="{StaticResource SwitchStyle}" /></Grid>
+                            <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                                <Button ToolTip="{loc:Text Tip.CopyHsb}" Content="{loc:Text Ui.CopyHsb}" IsEnabled="{Binding Colors.HasColor}" Margin="0,0,4,0" Style="{StaticResource NeutralButtonStyle}" Click="OnCopyHsbClick" />
+                                <Button ToolTip="{loc:Text Tip.AddPalette}" Grid.Column="1" Content="{loc:Text Ui.AddPalette}" IsEnabled="{Binding Colors.HasColor}" Margin="4,0,0,0" Style="{StaticResource NeutralButtonStyle}" Click="OnAddPaletteClick" /></Grid>
+                        </StackPanel>
+                    </Expander>
+
+                    <Expander IsExpanded="{Binding UiState.PaletteExpanded, Mode=TwoWay}" Style="{StaticResource CardExpanderStyle}">
+                        <Expander.Header><DockPanel MinWidth="0" LastChildFill="False"><TextBlock Text="{loc:Text Card.Palette}" FontSize="11" FontWeight="SemiBold" />
+                            <TextBlock Text="{Binding PaletteSummary}" DockPanel.Dock="Right" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" /></DockPanel></Expander.Header>
+                        <StackPanel>
+                            <ListBox x:Name="PaletteList" ItemsSource="{Binding Palette.Items}" Style="{StaticResource PaletteListStyle}"
+                                     MaxHeight="300" ScrollViewer.VerticalScrollBarVisibility="Auto" AllowDrop="True"
+                                     SelectionChanged="OnPaletteSelectionChanged" PreviewMouseLeftButtonDown="OnPaletteMouseDown"
+                                     PreviewMouseMove="OnPaletteMouseMove" DragOver="OnPaletteDragOver" Drop="OnPaletteDrop">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="#191919" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="7">
+                                            <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="28" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                                <Border Width="20" Height="20" Background="{Binding SwatchBrush}" BorderBrush="#777777" BorderThickness="1" CornerRadius="3" VerticalAlignment="Top" />
+                                                <StackPanel Grid.Column="1" Margin="5,0">
+                                                    <TextBox ToolTip="{loc:Text Tip.PaletteName}" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Style="{StaticResource NeutralTextBoxStyle}" FontSize="10" />
+                                                    <TextBlock Text="{Binding Hex}" FontSize="9" Margin="1,3,0,0" />
+                                                    <TextBlock Text="{Binding HsbText}" FontSize="8" Foreground="{StaticResource SecondaryTextBrush}" />
+                                                </StackPanel>
+                                                <Button ToolTip="{loc:Text Tip.DeletePalette}" Grid.Column="2" Content="×" Tag="{Binding}" Width="28" Height="28" Style="{StaticResource IconButtonStyle}" Click="OnDeletePaletteClick" />
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <Grid Margin="0,4,0,5"><Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+                                <TextBlock ToolTip="{loc:Text Tip.GeneratePalette}" Text="{loc:Text Ui.AutoColors}" FontSize="10" Foreground="{StaticResource SecondaryTextBrush}" />
+                                <TextBlock Grid.Column="1" Text="{Binding Palette.AutoColorCount}" FontSize="10" /></Grid>
+                            <Slider ToolTip="{loc:Text Tip.GeneratePalette}" Minimum="2" Maximum="12" TickFrequency="1" IsSnapToTickEnabled="True" Value="{Binding Palette.AutoColorCount, Mode=TwoWay}" Style="{StaticResource NeutralSliderStyle}" />
+                            <Button ToolTip="{loc:Text Tip.GeneratePalette}" Content="{loc:Text Ui.GeneratePalette}" Margin="0,9,0,0" IsEnabled="{Binding Reference.HasImage}" Style="{StaticResource NeutralButtonStyle}" Click="OnGeneratePaletteClick" />
+                            <TextBlock Text="{loc:Text Ui.PaletteHelp}" TextWrapping="Wrap" FontSize="8" Foreground="{StaticResource SecondaryTextBrush}" Margin="0,6,0,0" />
+                        </StackPanel>
+                    </Expander>
+
+                    <Expander IsExpanded="{Binding UiState.AdvancedExpanded, Mode=TwoWay}" Style="{StaticResource CardExpanderStyle}">
+                        <Expander.Header><TextBlock Text="{loc:Text Card.Advanced}" FontSize="11" FontWeight="SemiBold" /></Expander.Header>
+                        <StackPanel>
+                            <Button ToolTip="{loc:Text Tip.Center}" Content="{loc:Text Ui.ResetPosition}" Style="{StaticResource NeutralButtonStyle}" Click="OnCenterClick" Margin="0,0,0,6" />
+                            <Button ToolTip="{loc:Text Tip.ResetTransform}" Content="{loc:Text Ui.ResetTransform}" Style="{StaticResource NeutralButtonStyle}" Click="OnResetTransformClick" Margin="0,0,0,6" />
+                            <Button ToolTip="{loc:Text Tip.ResetEffects}" Content="{loc:Text Ui.ResetImageEffects}" Style="{StaticResource NeutralButtonStyle}" Click="OnResetEffectsClick" Margin="0,0,0,6" />
+                            <Button ToolTip="{loc:Text Tip.ResetGuides}" Content="{loc:Text Ui.ResetGuides}" Style="{StaticResource NeutralButtonStyle}" Click="OnResetGuidesClick" Margin="0,0,0,6" />
+                            <Button ToolTip="{loc:Text Tip.ResetAll}" Content="{loc:Text Ui.ResetAll}" Style="{StaticResource NeutralButtonStyle}" Click="OnResetAllClick" Margin="0,0,0,6" />
+                            <Button ToolTip="{loc:Text Tip.Fit}" Content="{loc:Text Ui.Fit}" Style="{StaticResource NeutralButtonStyle}" Click="OnFitClick" />
+                            <TextBlock Text="{loc:Text Ui.ResetHelp}" TextWrapping="Wrap" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" Margin="0,8,0,0" />
+                        </StackPanel>
+                    </Expander>
+                </StackPanel>
+            </ScrollViewer>
+
+            <Border Grid.Row="3" Margin="12,8,12,12" Padding="10,7" Background="{StaticResource PanelBrush}" CornerRadius="7">
+                <StackPanel>
+                    <TextBlock Text="{Binding Notification}" FontSize="9" TextWrapping="Wrap" Foreground="{StaticResource SecondaryTextBrush}" />
+                    <TextBlock Text="{loc:Text Ui.Footer}" FontSize="8" Margin="0,3,0,0" Foreground="{StaticResource DisabledTextBrush}" />
+                </StackPanel>
+            </Border>
+            <Thumb ToolTip="{loc:Text Tip.Resize}" Grid.RowSpan="4" Width="5" HorizontalAlignment="Right" Cursor="SizeWE" DragDelta="OnWidthDrag" shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                <Thumb.Template><ControlTemplate TargetType="Thumb"><Border Background="#303030" /></ControlTemplate></Thumb.Template>
+            </Thumb>
+        </Grid>
+    </Border>
+</Window>

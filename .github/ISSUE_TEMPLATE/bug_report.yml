@@ -1,0 +1,59 @@
+name: Bug report
+description: Report a reproducible TraceDeck FE problem.
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: Please do not attach private reference images, `.TDFE` projects, credentials or personal data.
+  - type: input
+    id: version
+    attributes:
+      label: TraceDeck FE version
+      placeholder: v1.0.0
+    validations:
+      required: true
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: Windows 11 24H2, x64
+    validations:
+      required: true
+  - type: dropdown
+    id: display-mode
+    attributes:
+      label: Forza display mode
+      options:
+        - Windowed
+        - Borderless
+        - Exclusive fullscreen
+        - Not applicable
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Use a synthetic or non-sensitive reference if an image is needed.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional context
+      description: Logs may contain environment details; review and redact them before sharing.
+

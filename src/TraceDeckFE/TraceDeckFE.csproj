@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <AssemblyName>TraceDeckFE</AssemblyName>
+    <RootNamespace>TraceDeckFE</RootNamespace>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <InformationalVersion>1.0.0</InformationalVersion>
+    <AssemblyTitle>TraceDeck FE</AssemblyTitle>
+    <Product>TraceDeck FE</Product>
+    <Description>TraceDeck FE</Description>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <PlatformTarget>x64</PlatformTarget>
+    <Platforms>x64</Platforms>
+    <Prefer32Bit>false</Prefer32Bit>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Assets\TraceDeckFE.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="14.16.0" />
+    <Resource Include="Assets\TraceDeck_FE_Mini_logo.png" />
+    <Resource Include="Assets\TraceDeckFE.ico" />
+    <Resource Include="Assets\Fonts\Pretendard-Regular.otf" />
+    <Resource Include="Assets\Fonts\Pretendard-Medium.otf" />
+    <Resource Include="Assets\Fonts\Pretendard-SemiBold.otf" />
+    <EmbeddedResource Include="Resources\Strings.*.json" WithCulture="false" />
+  </ItemGroup>
+
+</Project>

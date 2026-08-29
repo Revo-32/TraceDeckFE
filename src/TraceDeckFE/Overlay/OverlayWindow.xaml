@@ -1,0 +1,31 @@
+<Window x:Class="TraceDeckFE.Overlay.OverlayWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TraceDeck FE Reference Overlay"
+        Width="1" Height="1" Left="0" Top="0"
+        WindowStyle="None" ResizeMode="NoResize"
+        AllowsTransparency="True" Background="Transparent"
+        ShowInTaskbar="False" ShowActivated="False"
+        Focusable="False" Topmost="False">
+    <Canvas x:Name="OverlayCanvas" Background="Transparent" ClipToBounds="True">
+        <Canvas x:Name="GuideCanvas" IsHitTestVisible="False" />
+        <Image x:Name="ReferenceImage"
+               Stretch="Fill"
+               RenderTransformOrigin="0.5,0.5"
+               SnapsToDevicePixels="False"
+               RenderOptions.BitmapScalingMode="HighQuality"
+               RenderOptions.EdgeMode="Unspecified" />
+        <Border x:Name="MagnifierBorder" Width="132" Height="132" Visibility="Collapsed"
+                IsHitTestVisible="False" Background="#E6101010" BorderBrush="#B0B0B0"
+                BorderThickness="1" CornerRadius="3" ClipToBounds="True">
+            <Grid>
+                <Image x:Name="MagnifierImage" Stretch="Fill"
+                       RenderOptions.BitmapScalingMode="NearestNeighbor" />
+                <Rectangle Width="1" Fill="#4A4A4A" HorizontalAlignment="Center" />
+                <Rectangle Height="1" Fill="#4A4A4A" VerticalAlignment="Center" />
+                <Rectangle Width="12" Height="12" Stroke="#F2F2F2" StrokeThickness="1.5"
+                           HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Grid>
+        </Border>
+    </Canvas>
+</Window>

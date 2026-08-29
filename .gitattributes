@@ -1,0 +1,30 @@
+* text=auto
+
+*.cs text diff=csharp
+*.xaml text
+*.csproj text
+*.sln text eol=crlf
+*.props text
+*.targets text
+*.pubxml text
+*.ps1 text eol=crlf
+*.py text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.txt text eol=lf
+*.svg text eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ico binary
+*.otf binary
+*.ttf binary
+*.pdf binary
+*.zip binary
+*.dll binary
+*.exe binary
+

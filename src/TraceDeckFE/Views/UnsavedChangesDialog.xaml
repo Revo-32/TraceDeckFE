@@ -1,0 +1,25 @@
+<Window x:Class="TraceDeckFE.Views.UnsavedChangesDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:TraceDeckFE.Localization"
+        Title="{loc:Text Dialog.UnsavedTitle}" Width="420" Height="190"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize" ShowInTaskbar="False"
+        FontFamily="{StaticResource PretendardFontFamily}"
+        Background="{StaticResource WindowBackgroundBrush}" Foreground="{StaticResource PrimaryTextBrush}">
+    <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Padding="20">
+        <Grid>
+            <Grid.RowDefinitions><RowDefinition Height="*" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+            <StackPanel>
+                <TextBlock Text="{loc:Text Dialog.SaveQuestion}" FontSize="15" FontWeight="SemiBold" />
+                <TextBlock Text="{loc:Text Dialog.UnsavedHelp}"
+                           Margin="0,10,0,0" TextWrapping="Wrap" FontSize="10" Foreground="{StaticResource SecondaryTextBrush}" />
+            </StackPanel>
+            <Grid Grid.Row="1" Margin="0,16,0,0">
+                <Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+                <Button Content="{loc:Text Ui.Save}" Margin="0,0,5,0" Style="{StaticResource NeutralButtonStyle}" Click="OnSaveClick" />
+                <Button Grid.Column="1" Content="{loc:Text Ui.DontSave}" Margin="3,0" Style="{StaticResource NeutralButtonStyle}" Click="OnDontSaveClick" />
+                <Button Grid.Column="2" Content="{loc:Text Ui.Cancel}" Margin="5,0,0,0" Style="{StaticResource NeutralButtonStyle}" Click="OnCancelClick" />
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
